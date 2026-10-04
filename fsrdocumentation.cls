@@ -7,7 +7,7 @@
 % DIV: Steuert die sogenannte "Satzspiegelberechnung". Diese kontrolliert, wie groß das Verhältnis zwischen Randbereich und Textbereich ist.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{fsrdocumentation}
-\LoadClass[fontsize=11pt, parskip=half, DIV=12]{scrartcl}
+\LoadClass[fontsize=11pt, parskip=half, DIV=12]{scrreprt}
 \KOMAoptions{paper=a4,pagesize=auto}
 \RequirePackage{fsrbase} % Paket, welches default optionen für alle Dokumente des FSR enthält (z.B. Farben, Standard-Pakete oder ein Befehl fürs Logo)
 
