@@ -21,6 +21,9 @@ build/
 *.vrb
 *.xdv
 
+# Kompillierte PDF
+*.pdf
+
 # latexindent
 indent.log
 *.bak[0-9]*
