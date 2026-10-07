@@ -1,7 +1,20 @@
 \documentclass{fsrdocumentation}
 
+% -- Packages -- %
+\usepackage[
+  colorlinks=true,
+  linkcolor=teal,
+  urlcolor=blue,
+  citecolor=yellow
+]{hyperref}
+
 \begin{document}
+% -- Frontmatter -- %
 \maketitle
 \tableofcontents
-\include{chapters/1-Vorwort/chapter.tex}
+
+% -- Mainmatter -- %
+\include{chapters/1-Vorwort/chapter}
+\include{chapters/2-Leitfaden-für-Mitglieder/chapter}
+\include{chapters/3-Leitfaden-für-Administratoren/chapter}
 \end{document}
