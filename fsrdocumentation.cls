@@ -9,18 +9,14 @@
 \ProvidesClass{fsrdocumentation}
 \LoadClass[fontsize=11pt, parskip=half, DIV=12]{scrreprt}
 \KOMAoptions{paper=a4,pagesize=auto}
+
+% --- Packages --- %
+\RequirePackage{minted} % Syntax-Highlighting über Pygments (benötigt latexminted)
+\RequirePackage{tcolorbox}
 \RequirePackage{fsrbase} % Paket, welches default optionen für alle Dokumente des FSR enthält (z.B. Farben, Standard-Pakete oder ein Befehl fürs Logo)
 
 % -- Befehle -- %
 % Definiere "maketitle" neu, um eigenes Layout zu verwenden
-
-% Hilfskommando, welches eine Variable nimmt und einen Fehler in den Logs ausgibt, wenn diese vom Protokollanten nicht gesetzt wurde
-\newcommand{\Checkrequiredmacro}[1]{%
-  \@ifundefined{#1}{
-    \ClassError{fsrprotocol}{Makro \expandafter\string\csname#1\endcsname\space ist nicht definiert}{Bitte definiere \expandafter\string\csname#1\endcsname\space vor \string\begin{document}.}
-}{}
-}
-
 \renewcommand{\maketitle}{%
 	\begin{titlepage}
 		\centering
@@ -33,5 +29,31 @@
 
 		\normalsize
 		von Jannik Zenker
+
+		Version: \version
 	\end{titlepage}
+}
+
+% Kommando um schöne Codeblöcke zu erzeugen
+\tcbuselibrary{minted, skins, breakable}
+
+% Umgebung für Codeblöcke mit Syntax-Highlighting
+% 1. Argument = Optional: Zusätzliche tcolorbox-Optionen (z.B. title={Vorlage})
+% 2. Argument: Sprache des Codes (z.B. latex, bash, python)
+\newtcblisting{Codeblock}[2][]{%
+	listing engine=minted,
+	minted language=#2,
+	minted options={fontsize=\small, breaklines, tabsize=2, autogobble},
+	listing only,
+	enhanced,
+	breakable,
+	colback=fsrgrey!5,
+	colframe=fsrgrey,
+	coltitle=white,
+	fonttitle=\sffamily\bfseries\small,
+	boxrule=0.5pt,
+	arc=2pt,
+	left=6pt,
+	right=6pt,
+	#1
 }

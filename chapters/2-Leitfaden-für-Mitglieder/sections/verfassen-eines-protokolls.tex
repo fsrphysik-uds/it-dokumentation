@@ -1,2 +1,75 @@
 \section{Verfassen eines Sitzungsprotokolls}
-Zur Dokumentation der Beschlüsse des Fachschaftsrats im Rahmen der Fachschaftsratssitzungen, werden sogenannte \textit{Sitzungsprotokolle} erstellt. Zur Erstellung dieser Protokolle gibt es eine extra dafür angefertigte \LaTeX-Dokumentenklasse, welche so gestaltet wurde, dass ihre Anwendung auch für Mitglieder möglich ist, welche im Umgang mit \LaTeX \, nicht versiert sind.
+Um die Beschlüsse des Fachschaftsrats aus den Fachschaftsratssitzungen festzuhalten, werden \textit{Sitzungsprotokolle} angefertigt. Dafür gibt es eine eigens erstellte \LaTeX-Dokumentenklasse, die so gestaltet ist, dass auch Mitglieder ohne \LaTeX-Erfahrung damit arbeiten können.
+
+Die Dokumentenklasse übernimmt Layout und Gestaltung sowie die Nummerierung der Tagesordnungspunkte und Abstimmungen. Der Protokollant muss sich also nur um den Inhalt kümmern.
+
+\subsection{Erstellen eines neuen Protokolls}
+Auf dem Arbeitsrechner des Fachschaftsrats ist eine Vorlage für Sitzungsprotokolle hinterlegt. Mit ihr lässt sich ein neues Protokoll direkt im Dateimanager anlegen:
+
+\begin{enumerate}
+	\item Im Dateimanager den Ordner für die Sitzungsprotokolle öffnen.
+	\item Mit einem Rechtsklick auf eine freie Fläche das Kontextmenü öffnen und
+	      \textit{Neu erstellen} \textrightarrow{} \texttt{JJJJ-MM-DD\_protokoll\_Author.tex} auswählen.
+	\item Die neue Datei nach dem Schema \texttt{JJJJ-MM-DD\_protokoll\_Name.tex} umbenennen,
+	      z.\,B. \texttt{2026-10-14\_protokoll\_Max-Mustermann.tex}.
+	\item Die Datei in einem Editor öffnen (auf dem Arbeitsrechner des FSR: VSCodium) und wie im folgenden Abschnitt beschrieben bearbeiten.
+\end{enumerate}
+
+\subsection{Schreiben eines Protokolls}
+Im ersten Teil des \LaTeX-Dokuments werden die Dokumentenklasse geladen und die Metadaten der Sitzung festgelegt. Diese Angaben sind Pflicht: Fehlt eine davon, verweigert \LaTeX{} die Kompilierung (also die Erstellung der PDF-Datei)!
+
+\textbf{Hinweis: Alles, was in einer Zeile hinter einem \texttt{\%} steht, ist ein Kommentar und wird von \LaTeX{} ignoriert. Kommentare dienen lediglich als Hinweise für Verfasser und Leser des Dokuments.}
+\begin{Codeblock}[title={Anfang des Dokuments}]{latex}
+	\documentclass{fsrprotocol}
+
+	% --- Setze Informationen zu dem Dokument --- %
+	% Hier stehen Informationen zur Sitzung. Der Protokollant muss diese ausfüllen.
+	\newcommand{\Sitzungsdatum}{dd.mm.yyyy}
+	\newcommand{\Sitzungszeitraum}{00:00 - 23:59 Uhr}
+	\newcommand{\Sitzungsort}{Hier Veranstaltungsort eintragen}
+	\newcommand{\Sitzungsleitung}{Vorname Nachname}
+	\newcommand{\Protokollfuehrer}{Vorname Nachname}
+	\newcommand{\Anwesenheitsliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
+	\newcommand{\Gaesteliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
+    
+\begin{document}
+\end{Codeblock}
+
+Der Befehl \mintinline{latex}{\documentclass{fsrprotocol}} teilt \LaTeX{} mit, dass ein Sitzungsprotokoll erstellt werden soll. Die nachfolgenden \mintinline{latex}{\newcommand}-Befehle legen die Informationen zur Sitzung fest; der Protokollant passt sie an die jeweilige Sitzung an. Das abschließende \mintinline{latex}{\begin{document}} markiert den Beginn des eigentlichen Inhalts und muss immer an dieser Stelle stehen.
+
+Als Nächstes wird die Liste der Tagesordnungspunkte angelegt. Dafür gibt es die Umgebung \texttt{Toplist}, die die Tagesordnungspunkte automatisch als Aufzählung darstellt.
+
+\begin{Codeblock}[title={Liste der Tagesordnungspunkte}]{latex}
+	\begin{Toplist}
+		\item Erster Tagesordnungspunkt
+		\item Zweiter Tagesordnungspunkt
+		\item ...
+	\end{Toplist}
+\end{Codeblock}
+
+Der restliche Inhalt des Dokuments besteht aus den ausführlichen Beschreibungen der einzelnen Tagesordnungspunkte. Ein Tagesordnungspunkt wird mit \mintinline{latex}{\begin{Top}{Titel}} begonnen und mit \mintinline{latex}{\end{Top}} beendet.
+
+\begin{Codeblock}[title={Erstellen eines Tagesordnungspunkts mit Abstimmungen}]{latex}
+	\begin{Top}{Titel des ersten Tagesordnungspunkts}
+		Hier die ausführliche Beschreibung und Diskussion zum ersten TOP.
+		% Abstimmungen sind optional
+		\Abstimmung[]{Erste Abstimmung zum ersten Tagesordnungspunkt}{2}{1}{2}
+		\Abstimmung[vertagt]{Zweite Abstimmung zum ersten Tagesordnungspunkt}{}{}{}
+	\end{Top}
+\end{Codeblock}
+
+Innerhalb eines Tagesordnungspunkts können eine oder mehrere Abstimmungen festgehalten werden. Dazu dient der Befehl \mintinline{latex}{\Abstimmung[Vermerk]{Gegenstand}{Ja}{Nein}{Enthaltungen}}. Bei einer regulären Abstimmung bleiben die eckigen Klammern leer.
+
+Wurde eine Abstimmung nicht durchgeführt, etwa weil sie vertagt wurde, wird statt der Stimmen ein Vermerk eingetragen: Der Vermerk steht in den eckigen Klammern, die drei Stimmfelder bleiben leer (siehe die zweite Abstimmung im Beispiel).
+
+Zum Schluss muss das Dokument durch Beenden der \texttt{document}-Umgebung abgeschlossen werden:
+
+\begin{Codeblock}[title={Abschließen des Dokuments}]{latex}
+	\end{document}
+\end{Codeblock}
+
+\subsection{Abschließende Hinweise}
+Der Gegenstand einer Abstimmung sollte möglichst im Wortlaut des Antrags festgehalten werden, da das Protokoll als Nachweis für die Beschlüsse dient. Vor der Ablage sollte das Protokoll kompiliert und die erzeugte PDF-Datei auf Vollständigkeit und Tippfehler geprüft werden.
+
+Bei Unklarheiten zur Erstellung eines Protokolls hilft der aktuelle Administrator weiter. Auch die \texttt{.tex}-Dateien älterer Protokolle können als Orientierung hilfreich sein.
+% TODO: Auf die Section zu LaTeX verweisen, sobald diese existiert.

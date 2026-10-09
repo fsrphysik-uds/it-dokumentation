@@ -8,13 +8,16 @@
   citecolor=yellow
 ]{hyperref}
 
+% --- Set version number --- %
+\newcommand{\version}{0.2.0}
+
 \begin{document}
 % -- Frontmatter -- %
 \maketitle
 \tableofcontents
 
 % -- Mainmatter -- %
-\include{chapters/1-Vorwort/chapter}
-\include{chapters/2-Leitfaden-für-Mitglieder/chapter}
-\include{chapters/3-Leitfaden-für-Administratoren/chapter}
+\input{chapters/1-Vorwort/chapter}
+\input{chapters/2-Leitfaden-für-Mitglieder/chapter}
+\input{chapters/3-Leitfaden-für-Administratoren/chapter}
 \end{document}
