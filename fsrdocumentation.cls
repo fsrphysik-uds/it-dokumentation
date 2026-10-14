@@ -12,8 +12,9 @@
 
 % --- Packages --- %
 \RequirePackage{minted} % Syntax-Highlighting über Pygments (benötigt latexminted)
-\RequirePackage{tcolorbox}
+\RequirePackage{tcolorbox} % Erstellen von farbigen boxen mit Textinhalt
 \RequirePackage{fsrbase} % Paket, welches default optionen für alle Dokumente des FSR enthält (z.B. Farben, Standard-Pakete oder ein Befehl fürs Logo)
+\RequirePackage{tabularx} % Bessere Tabellen
 
 % -- Befehle -- %
 % Definiere "maketitle" neu, um eigenes Layout zu verwenden
@@ -57,3 +58,17 @@
 	right=6pt,
 	#1
 }
+
+% Neue Umgebung um Konfigurationen schöner darzustellen
+\newenvironment{config}
+{%
+	\begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.32\textwidth}X@{}}
+		}
+		{%
+	\end{tabularx}
+}
+
+% Spezielle Version von "\item" zur Nutzung mit dem "config" environment
+% Der Konfigurationsname wird normal dargestellt, 
+% während der Wert in mit Monospace-Font dargestellt wird
+\newcommand{\configitem}[2]{#1 & \texttt{#2} \\[0.4em]}
