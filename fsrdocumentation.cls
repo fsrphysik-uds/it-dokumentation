@@ -1,5 +1,5 @@
 % --- Dokumentenklasse für die IT-Dokumentation des FSR --- %
-% Basis der Fachschaftsprotokolle ist die Die Dokumentklasse "scrareprt". Die Einstellungen in der Reihnefolge:
+% Basis der Dokumentation ist die Dokumentklasse "scrreprt". Die Einstellungen in der Reihenfolge:
 % fontsize: Schriftgröße
 % paper: Papierformat
 % pagesize: Papierformat im PDF ("auto" überträgt das Papierformat aus der Option "paper" auf diese Option).
@@ -15,6 +15,8 @@
 \RequirePackage{tcolorbox} % Erstellen von farbigen boxen mit Textinhalt
 \RequirePackage{fsrbase} % Paket, welches default optionen für alle Dokumente des FSR enthält (z.B. Farben, Standard-Pakete oder ein Befehl fürs Logo)
 \RequirePackage{tabularx} % Bessere Tabellen
+\RequirePackage{booktabs} % Schönere horizontale Linien in Tabellen (\toprule, \midrule, \bottomrule)
+\RequirePackage{awesomebox} % Hinweisboxen (\notebox, \tipbox, \warningbox, \cautionbox, \importantbox)
 
 % -- Befehle -- %
 % Definiere "maketitle" neu, um eigenes Layout zu verwenden
@@ -34,6 +36,19 @@
 		Version: \version
 	\end{titlepage}
 }
+
+% Hinweisboxen von awesomebox ragen sonst 1em in den rechten Rand: Durch "parskip=half" verlangt KOMA-Script
+% in der letzten Zeile eines Absatzes 1em Freiraum. Innerhalb der Boxen wird diese Vorgabe aufgehoben.
+\newcommand{\fsr@fixawesomebox}[1]{%
+	\expandafter\let\csname fsr@orig@#1\expandafter\endcsname\csname #1\endcsname
+	\expandafter\renewcommand\csname #1\endcsname[1]{%
+		{\setlength{\parfillskip}{0pt plus 1fil}\csname fsr@orig@#1\endcsname{##1}\par}}%
+}
+\fsr@fixawesomebox{notebox}
+\fsr@fixawesomebox{tipbox}
+\fsr@fixawesomebox{warningbox}
+\fsr@fixawesomebox{cautionbox}
+\fsr@fixawesomebox{importantbox}
 
 % Kommando um schöne Codeblöcke zu erzeugen
 \tcbuselibrary{minted, skins, breakable}

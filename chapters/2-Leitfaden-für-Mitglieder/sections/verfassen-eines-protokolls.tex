@@ -1,29 +1,36 @@
 \section{Verfassen eines Sitzungsprotokolls}
-Um die Beschlüsse des Fachschaftsrats aus den Fachschaftsratssitzungen festzuhalten, werden \textit{Sitzungsprotokolle} angefertigt. Dafür gibt es eine eigens erstellte \LaTeX-Dokumentenklasse, die so gestaltet ist, dass auch Mitglieder ohne \LaTeX-Erfahrung damit arbeiten können.
+\label{protokoll}
+Um die Beschlüsse aus den Sitzungen des Fachschaftsrats festzuhalten, werden \textit{Sitzungsprotokolle} angefertigt. Dafür gibt es eine eigens erstellte \hyperref[latex-uebersicht]{\LaTeX-Dokumentenklasse}, die so gestaltet ist, dass auch Mitglieder ohne \LaTeX-Erfahrung damit arbeiten können.
 
-Die Dokumentenklasse übernimmt Layout und Gestaltung sowie die Nummerierung der Tagesordnungspunkte und Abstimmungen. Der Protokollant muss sich also nur um den Inhalt kümmern.
+Die Dokumentenklasse übernimmt Layout und Gestaltung sowie die Nummerierung der Tagesordnungspunkte und Abstimmungen. Grundlagen zu \LaTeX{}, zum Kompilieren der PDF-Datei und zum Umgang mit Fehlermeldungen finden sich in \autoref{latex}.
 
 \subsection{Erstellen eines neuen Protokolls}
+\label{protokoll-erstellen}
 Auf dem Arbeitsrechner des Fachschaftsrats ist eine Vorlage für Sitzungsprotokolle hinterlegt. Mit ihr lässt sich ein neues Protokoll direkt im Dateimanager anlegen:
 
 \begin{enumerate}
-	\item Im Dateimanager den Ordner für die Sitzungsprotokolle öffnen.
+	% TODO: Nach Fertigstellung des Servers den Pfad zu Dokumente/Protokolle/JJJJ ändern.
+	\item Im Dateimanager den Ordner \texttt{Dokumente/webspace/Protokolle/JJJJ} für das Jahr der Sitzung öffnen. Falls der Ordner noch nicht existiert, muss er zuerst angelegt werden.
 	\item Mit einem Rechtsklick auf eine freie Fläche das Kontextmenü öffnen und
-	      \textit{Neu erstellen} \textrightarrow{} \texttt{fsrprotocoll.tex} auswählen.
+	      \textit{Neu erstellen} \textrightarrow{} \texttt{fsrprotocol.tex} auswählen.
 	\item Die neue Datei nach dem Schema \texttt{JJJJ-MM-DD\_Sitzungsprotokoll\_Name.tex} umbenennen,
 	      z.\,B. \texttt{2026-10-14\_Sitzungsprotokoll\_Max-Mustermann.tex}.
-	\item Die Datei in einem Editor öffnen (auf dem Arbeitsrechner des FSR: VSCodium) und wie im folgenden Abschnitt beschrieben bearbeiten.
+	\item Die Datei in einem Editor öffnen (auf dem Arbeitsrechner des Fachschaftsrats: VSCodium) und wie im Folgenden beschrieben bearbeiten.
+	\item Das fertige Protokoll \hyperref[latex-kompilieren]{kompilieren} und die erzeugte PDF-Datei aus dem Ordner \texttt{build/} in denselben Jahresordner verschieben, sodass \texttt{.tex}- und \texttt{.pdf}-Datei zusammen abgelegt sind.
 \end{enumerate}
 
 \subsection{Schreiben eines Protokolls}
-Im ersten Teil des \LaTeX-Dokuments werden die Dokumentenklasse geladen und die Metadaten der Sitzung festgelegt. Diese Angaben sind Pflicht: Fehlt eine davon, verweigert \LaTeX{} die Kompilierung (also die Erstellung der PDF-Datei)!
+\label{protokoll-schreiben}
+Im ersten Teil des \LaTeX-Dokuments werden die Dokumentenklasse geladen und die Metadaten der Sitzung festgelegt.
 
-\textbf{Hinweis: Alles, was in einer Zeile hinter einem \texttt{\%} steht, ist ein Kommentar und wird von \LaTeX{} ignoriert. Kommentare dienen lediglich als Hinweise für Verfasser und Leser des Dokuments.}
-\begin{Codeblock}[title={Anfang des Dokuments}]{latex}
+\importantbox{Die Angaben zur Sitzung sind Pflicht: Fehlt eine davon, verweigert \LaTeX{} die \hyperref[latex-kompilieren]{Kompilierung}. Die dabei angezeigte Fehlermeldung ist in \autoref{latex-fehlermeldungen} beschrieben.}
+
+\notebox{Alles, was in einer Zeile hinter einem \texttt{\%} steht, ist ein Kommentar und wird von \LaTeX{} ignoriert. Kommentare dienen lediglich als Hinweise für Verfasser und Leser des Dokuments. Soll ein \texttt{\%} im Text erscheinen, muss ein Backslash davor stehen, wie bei anderen \hyperref[latex-sonderzeichen]{Sonderzeichen} auch.}
+\begin{Codeblock}[title={Anfang des Dokuments}, unbreakable]{latex}
 	\documentclass{fsrprotocol}
 
 	% --- Setze Informationen zu dem Dokument --- %
-	% Hier stehen Informationen zur Sitzung. Der Protokollant muss diese ausfüllen.
+	% Hier stehen Informationen zur Sitzung. Der Protokollführer muss diese ausfüllen.
 	\newcommand{\Sitzungsdatum}{dd.mm.yyyy}
 	\newcommand{\Sitzungszeitraum}{00:00 - 23:59 Uhr}
 	\newcommand{\Sitzungsort}{Hier Veranstaltungsort eintragen}
@@ -31,11 +38,11 @@ Im ersten Teil des \LaTeX-Dokuments werden die Dokumentenklasse geladen und die 
 	\newcommand{\Protokollfuehrer}{Vorname Nachname}
 	\newcommand{\Anwesenheitsliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
 	\newcommand{\Gaesteliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
-    
-\begin{document}
+
+	\begin{document}
 \end{Codeblock}
 
-Der Befehl \mintinline{latex}{\documentclass{fsrprotocol}} teilt \LaTeX{} mit, dass ein Sitzungsprotokoll erstellt werden soll. Die nachfolgenden \mintinline{latex}{\newcommand}-Befehle legen die Informationen zur Sitzung fest; der Protokollant passt sie an die jeweilige Sitzung an. Das abschließende \mintinline{latex}{\begin{document}} markiert den Beginn des eigentlichen Inhalts und muss immer an dieser Stelle stehen.
+Der Befehl \mintinline{latex}{\documentclass{fsrprotocol}} teilt \LaTeX{} mit, dass ein Sitzungsprotokoll erstellt werden soll. Die nachfolgenden \mintinline{latex}{\newcommand}-Befehle legen die Informationen zur jeweiligen Sitzung fest. Das abschließende \mintinline{latex}{\begin{document}} markiert den Beginn des eigentlichen Inhalts und muss immer an dieser Stelle stehen.
 
 Als Nächstes wird die Liste der Tagesordnungspunkte angelegt. Dafür gibt es die Umgebung \texttt{Toplist}, die die Tagesordnungspunkte automatisch als Aufzählung darstellt.
 
@@ -58,7 +65,7 @@ Der restliche Inhalt des Dokuments besteht aus den ausführlichen Beschreibungen
 	\end{Top}
 \end{Codeblock}
 
-Innerhalb eines Tagesordnungspunkts können eine oder mehrere Abstimmungen festgehalten werden. Dazu dient der Befehl \mintinline{latex}{\Abstimmung[Vermerk]{Gegenstand}{Ja}{Nein}{Enthaltungen}}. Bei einer regulären Abstimmung bleiben die eckigen Klammern leer.
+Innerhalb eines Tagesordnungspunkts können eine oder mehrere Abstimmungen festgehalten werden. Dazu dient der Befehl \mintinline{latex}{\Abstimmung[Vermerk]{Gegenstand}{Ja}{Nein}{Enthaltungen}}. Bei einer regulären Abstimmung bleiben die eckigen Klammern leer und alle drei Stimmfelder werden mit einer Zahl gefüllt, auch wenn diese 0 ist. Fehlt bei den Ja- oder Nein-Stimmen eine Zahl, bricht die Kompilierung mit einem Fehler ab. Das Ergebnis wird automatisch bestimmt: Gibt es mehr Ja- als Nein-Stimmen, wird die Abstimmung als "angenommen" vermerkt, ansonsten als "abgelehnt".
 
 Wurde eine Abstimmung nicht durchgeführt, etwa weil sie vertagt wurde, wird statt der Stimmen ein Vermerk eingetragen: Der Vermerk steht in den eckigen Klammern, die drei Stimmfelder bleiben leer (siehe die zweite Abstimmung im Beispiel).
 
@@ -69,7 +76,7 @@ Zum Schluss muss das Dokument durch Beenden der \texttt{document}-Umgebung abges
 \end{Codeblock}
 
 \subsection{Abschließende Hinweise}
-Der Gegenstand einer Abstimmung sollte möglichst im Wortlaut des Antrags festgehalten werden, da das Protokoll als Nachweis für die Beschlüsse dient. Vor der Ablage sollte das Protokoll kompiliert und die erzeugte PDF-Datei auf Vollständigkeit und Tippfehler geprüft werden.
+\label{protokoll-hinweise}
+Der Gegenstand einer Abstimmung sollte möglichst im Wortlaut des Antrags festgehalten werden, da das Protokoll als Nachweis für die Beschlüsse dient. Vor der Ablage sollte das Protokoll \hyperref[latex-kompilieren]{kompiliert} und die erzeugte PDF-Datei auf Vollständigkeit und Tippfehler geprüft werden.
 
 Bei Unklarheiten zur Erstellung eines Protokolls hilft der aktuelle Administrator weiter. Auch die \texttt{.tex}-Dateien älterer Protokolle können als Orientierung hilfreich sein.
-% TODO: Auf die Section zu LaTeX verweisen, sobald diese existiert. Auch darauf, wie eine PDF kompilliert wird.
