@@ -8,6 +8,8 @@ Die Dokumentenklasse übernimmt Layout und Gestaltung sowie die Nummerierung der
 \label{protokoll-erstellen}
 Auf dem Arbeitsrechner des Fachschaftsrats ist eine Vorlage für Sitzungsprotokolle hinterlegt. Mit ihr lässt sich ein neues Protokoll direkt im Dateimanager anlegen:
 
+\notebox{Die folgende Anleitung gilt für den eingerichteten Arbeitsrechner des Fachschaftsrats. Auf eigenen Rechnern müssen zunächst die in Unterabschnitt 2.1.6 beschriebenen Voraussetzungen erfüllt sein.}
+
 \begin{enumerate}
 	% TODO: Nach Fertigstellung des Servers den Pfad zu Dokumente/Protokolle/JJJJ ändern.
 	\item Im Dateimanager den Ordner \texttt{Dokumente/webspace/Protokolle/JJJJ} für das Jahr der Sitzung öffnen. Falls der Ordner noch nicht existiert, muss er zuerst angelegt werden.
@@ -39,7 +41,7 @@ Im ersten Teil des \LaTeX-Dokuments werden die Dokumentenklasse geladen und die 
 	\newcommand{\Anwesenheitsliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
 	\newcommand{\Gaesteliste}{Vorname1 Nachname1, Vorname2 Nachname2, ...}
 
-	\begin{document}
+\begin{document}
 \end{Codeblock}
 
 Der Befehl \mintinline{latex}{\documentclass{fsrprotocol}} teilt \LaTeX{} mit, dass ein Sitzungsprotokoll erstellt werden soll. Die nachfolgenden \mintinline{latex}{\newcommand}-Befehle legen die Informationen zur jeweiligen Sitzung fest. Das abschließende \mintinline{latex}{\begin{document}} markiert den Beginn des eigentlichen Inhalts und muss immer an dieser Stelle stehen.
