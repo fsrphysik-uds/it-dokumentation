@@ -1,0 +1,34 @@
+\subsection{Übersicht über Paket und Dokumentenklassen}
+\label{latex-uebersicht}
+Die \LaTeX{}-Vorlagen des Fachschaftsrats bestehen aus dem Basispaket \texttt{fsrbase} und darauf aufbauenden Dokumentenklassen. Eine Dokumentenklasse legt Layout, Gestaltung und wiederkehrende Elemente eines Dokumenttyps fest, z.\,B. bei \hyperref[protokoll]{Sitzungsprotokollen}.
+
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\textbf{Name}               & \textbf{Zweck}                                                                                                                   \\
+		\midrule
+		\texttt{fsrbase}            & \hyperref[latex-fsrbase]{Basispaket}: legt Schriftarten, Farben, deutsche Sprache und Anführungszeichen fest und stellt den Befehl \texttt{\textbackslash fsrlogo} bereit. \\
+		\texttt{fsrprotocol}        & \hyperref[latex-fsrprotocol]{Dokumentenklasse} für \hyperref[protokoll]{Sitzungsprotokolle}.                                                   \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+% TODO: Weitere Dokumentenklassen ergänzen, sobald diese existieren.
+
+Welche Dokumentenklasse verwendet wird, legt der Befehl \mintinline{latex}{\documentclass} in der ersten Zeile des Dokuments fest. Ein Sitzungsprotokoll beginnt beispielsweise mit \mintinline{latex}{\documentclass{fsrprotocol}}. Das Basispaket \texttt{fsrbase} wird dabei bei allen Dokumentenklassen des Fachschaftsrats automatisch mitgeladen.
+
+\subsubsection{\KOMAScript{}-Klassen}
+\label{latex-koma}
+Dokumente des Fachschaftsrats verwenden statt der Standardklassen von \LaTeX{} die entsprechenden \KOMAScript{}-Klassen. Auch \texttt{fsrprotocol} baut auf \texttt{scrartcl} auf. Für Dokumenttypen ohne eigene Dokumentenklasse wird das Basispaket direkt zusammen mit einer dieser Klassen geladen (siehe \autoref{latex-ohne-dokumentenklasse}).
+
+\begin{center}
+	\begin{tabularx}{\linewidth}{llX}
+		\toprule
+		\textbf{Standardklasse} & \textbf{\KOMAScript{}-Klasse} & \textbf{Typische Verwendung}          \\
+		\midrule
+		\texttt{article}        & \texttt{scrartcl}             & Kurze Dokumente, z.\,B. Aushänge      \\
+		\texttt{report}         & \texttt{scrreprt}             & Längere Dokumente mit Kapiteln        \\
+		\texttt{book}           & \texttt{scrbook}              & Bücher, doppelseitiger Satz           \\
+		\texttt{letter}         & \texttt{scrlttr2}             & Briefe und Schreiben                  \\
+		\bottomrule
+	\end{tabularx}
+\end{center}

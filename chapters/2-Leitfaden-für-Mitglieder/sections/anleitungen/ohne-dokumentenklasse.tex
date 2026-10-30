@@ -1,0 +1,21 @@
+\subsection{Erstellen von Dokumenten ohne passende Dokumentenklasse}
+\label{latex-ohne-dokumentenklasse}
+Für Dokumente, für die es noch keine eigene Dokumentenklasse gibt (z.\,B. Aushänge oder Schreiben), wird das \hyperref[latex-fsrbase]{Basispaket} direkt eingebunden:
+\begin{enumerate}
+	\item Die passende \KOMAScript{}-Klasse aus \autoref{latex-koma} mit \mintinline{latex}{\documentclass} laden, z.\,B. \texttt{scrartcl} für einen Aushang.
+	\item Direkt darunter das Basispaket mit \mintinline{latex}{\usepackage{fsrbase}} einbinden.
+	\item Den Inhalt zwischen \mintinline{latex}{\begin{document}} und \mintinline{latex}{\end{document}} schreiben.
+	\item Das Dokument \hyperref[latex-kompilieren]{kompilieren}.
+\end{enumerate}
+
+\begin{Codeblock}[title={Minimales Dokument mit dem Basispaket}]{latex}
+\documentclass{scrartcl}
+\usepackage{fsrbase}
+
+\begin{document}
+\fsrlogo[4cm]
+
+\section*{Überschrift}
+Hier steht der Inhalt des Dokuments.
+\end{document}
+\end{Codeblock}

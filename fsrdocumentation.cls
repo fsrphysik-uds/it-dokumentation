@@ -10,6 +10,11 @@
 \LoadClass[fontsize=11pt, parskip=half, DIV=12]{scrreprt}
 \KOMAoptions{paper=a4,pagesize=auto}
 
+% Auch \subsubsection nummerieren und ins Inhaltsverzeichnis aufnehmen (Standard bei scrreprt: nur bis \subsection),
+% damit Verweise per \autoref auf Unterunterabschnitte die richtige Nummer anzeigen
+\setcounter{secnumdepth}{\subsubsectionnumdepth}
+\setcounter{tocdepth}{\subsubsectiontocdepth}
+
 % --- Packages --- %
 \RequirePackage{minted} % Syntax-Highlighting über Pygments (benötigt latexminted)
 \RequirePackage{tcolorbox} % Erstellen von farbigen boxen mit Textinhalt

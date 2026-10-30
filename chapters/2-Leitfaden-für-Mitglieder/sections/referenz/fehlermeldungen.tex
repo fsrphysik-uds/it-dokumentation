@@ -1,0 +1,10 @@
+\subsection{Fehlermeldungen der Vorlagen}
+\label{latex-fehlermeldungen}
+Neben den üblichen \LaTeX{}-Fehlern können die Vorlagen des Fachschaftsrats eigene Fehlermeldungen ausgeben:
+\begin{description}
+	\item[\texttt{LuaTeX is required to compile this document}] Das Dokument wurde nicht mit LuaLaTeX kompiliert (siehe \autoref{latex-kompilieren} bzw. \autoref{latex-eigener-rechner}).
+	\item[\texttt{Makro ... ist nicht definiert}] In einem Sitzungsprotokoll fehlt eine der Pflichtangaben am Anfang des Dokuments (siehe \autoref{protokoll-schreiben}).
+	\item[\texttt{Missing number, treated as zero}] In einem Sitzungsprotokoll fehlt bei einer \texttt{\textbackslash Abstimmung} ohne Vermerk die Zahl der Ja- oder Nein-Stimmen (siehe \autoref{latex-fsrprotocol}). Diese Meldung ist ein allgemeiner \LaTeX{}-Fehler und kann auch andere Ursachen haben.
+\end{description}
+
+Zum Vorgehen bei anderen Fehlern siehe \autoref{latex-fehler-finden}.

@@ -1,0 +1,32 @@
+\subsection{Die Dokumentenklasse \texttt{fsrprotocol}}
+\label{latex-fsrprotocol}
+Die Dokumentenklasse für \hyperref[protokoll]{Sitzungsprotokolle} übernimmt Layout und Gestaltung sowie die Nummerierung der Tagesordnungspunkte und Abstimmungen. Sie legt Folgendes fest:
+\begin{itemize}
+	\item \textbf{Grundlage:} \KOMAScript{}-Klasse \texttt{scrartcl} mit Schriftgröße 11\,pt, Papierformat A4, halbzeiligem Absatzabstand statt Einrückung (\texttt{parskip=half}) und Satzspiegel \texttt{DIV=12}. Das \hyperref[latex-fsrbase]{Basispaket} wird automatisch geladen.
+	\item \textbf{Kopf:} Titel \enquote{Sitzungsprotokoll}, Logo in 4,3\,cm Höhe (über \mintinline{latex}{\fsrlogo}, daher wird immer die Datei \texttt{fsr-logo.png} benötigt), Angaben zum Veranstaltungsort und der Sitzung aus der folgenden Tabelle.
+\end{itemize}
+
+Die folgenden Befehle legen die Informationen zur jeweiligen Sitzung fest. Sie werden mit \texttt{\textbackslash newcommand} vor \texttt{\textbackslash begin\{document\}} festgelegt. Die Angaben zur Sitzung sind Pflicht: Fehlt eine davon, verweigert \LaTeX{} die Kompilierung (siehe \autoref{latex-fehlermeldungen}). Waren keine Gäste anwesend, wird \texttt{\textbackslash Gaesteliste} auf \enquote{keine} gesetzt.
+
+\begin{center}
+	\begin{tabularx}{\linewidth}{llX}
+		\toprule
+		\textbf{Befehl}                           & \textbf{Im Kopf als} & \textbf{Platzhalter in der Vorlage}         \\
+		\midrule
+		\texttt{\textbackslash Sitzungsdatum}     & Datum                & dd.mm.yyyy                                  \\
+		\texttt{\textbackslash Sitzungszeitraum}  & Zeitraum             & 00:00 - 23:59 Uhr                           \\
+		\texttt{\textbackslash Sitzungsort}       & Ort                  & Hier Veranstaltungsort eintragen            \\
+		\texttt{\textbackslash Sitzungsleitung}   & Sitzungsleitung      & Vorname Nachname                            \\
+		\texttt{\textbackslash Protokollfuehrer}  & Protokollführer      & Vorname Nachname                            \\
+		\texttt{\textbackslash Anwesenheitsliste} & Anwesende            & Vorname1 Nachname1, Vorname2 Nachname2, ... \\
+		\texttt{\textbackslash Gaesteliste}       & Gäste                & Vorname1 Nachname1, Vorname2 Nachname2, ... \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+Für den Inhalt des Protokolls stellt die Dokumentenklasse folgende Umgebungen und Befehle bereit:
+\begin{description}
+	\item[\texttt{Toplist}] Umgebung, die die Tagesordnungspunkte automatisch als Aufzählung darstellt.
+	\item[\texttt{Top}] Umgebung für die ausführliche Beschreibung eines Tagesordnungspunkts. Ein Tagesordnungspunkt wird mit \texttt{\textbackslash begin\{Top\}\{Titel\}} begonnen und mit \texttt{\textbackslash end\{Top\}} beendet.
+	\item[{\texttt{\textbackslash Abstimmung[Vermerk]\{Gegenstand\}\{Ja\}\{Nein\}\{Enthaltungen\}}}] Hält innerhalb eines Tagesordnungspunkts eine Abstimmung fest. Bei einer regulären Abstimmung bleibt der Vermerk leer und alle drei Stimmfelder enthalten eine Zahl. Fehlt bei den Ja- oder Nein-Stimmen eine Zahl, bricht die Kompilierung mit einem Fehler ab. Das Ergebnis wird automatisch bestimmt: Gibt es mehr Ja- als Nein-Stimmen, wird die Abstimmung als "angenommen" vermerkt, ansonsten als "abgelehnt". Wurde eine Abstimmung nicht durchgeführt, wird statt der Stimmen der Vermerk eingetragen, die drei Stimmfelder bleiben dann leer.
+\end{description}

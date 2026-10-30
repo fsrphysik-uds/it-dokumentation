@@ -1,0 +1,19 @@
+\subsection{Das Basispaket \texttt{fsrbase}}
+\label{latex-fsrbase}
+Das Basispaket sorgt dafür, dass alle Dokumente des Fachschaftsrats einheitlich aussehen. Es legt Folgendes fest:
+\begin{itemize}
+	\item \textbf{Kompilierprogramm:} Das Paket setzt LuaLaTeX voraus und bricht mit einer \hyperref[latex-fehlermeldungen]{Fehlermeldung} ab, wenn ein anderes Programm (z.\,B. pdfLaTeX) verwendet wird.
+	\item \textbf{Schriftarten:} TeX Gyre Termes als Serifenschrift und TeX Gyre Heros als serifenlose Schrift (über \texttt{fontspec}).
+	\item \textbf{Sprache:} Deutsche Silbentrennung und Typografie über \texttt{babel} mit der Option \texttt{ngerman}.
+	\item \textbf{Anführungszeichen:} Über \texttt{csquotes} werden gerade Anführungszeichen \texttt{\string"...\string"} im Text automatisch zu deutschen Anführungszeichen "..." umgewandelt. Alternativ kann \mintinline{latex}{\enquote{...}} verwendet werden.
+	\item \textbf{Weitere Pakete:} \texttt{microtype} (bessere Typografie/Blocksatz), \texttt{xcolor} (Farben) und \texttt{graphicx} (Einbinden von Bildern) werden geladen und müssen nicht erneut eingebunden werden.
+\end{itemize}
+
+Für den Inhalt stellt das Basispaket folgende Farben und Befehle bereit:
+\begin{description}
+	\item[\texttt{fsrcolor}] Akzentfarbe des Fachschaftsrats (Schwarz, RGB 0,\,0,\,0).
+	\item[\texttt{fsrgrey}] Grauton des Fachschaftsrats (HTML \texttt{4D4D4D}).
+	\item[{\texttt{\textbackslash fsrlogo[Höhe]}}] Setzt das Fachschaftslogo aus der Datei \texttt{fsr-logo.png} in der angegebenen Höhe. Ohne Angabe der Höhe wird das Logo 5\,cm hoch gesetzt.
+\end{description}
+
+Die Farben werden wie andere \texttt{xcolor}-Farben verwendet, z.\,B. mit \mintinline{latex}{\textcolor{fsrgrey}{Text}}.

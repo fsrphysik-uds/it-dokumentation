@@ -1,0 +1,16 @@
+\subsection{Erstellen von Dokumenten auf dem eigenen Rechner}
+\label{latex-eigener-rechner}
+Dokumente können auch auf einem eigenen Rechner kompiliert werden. Dort muss ebenfalls LuaLaTeX verwendet werden (z.\,B. mit dem Terminal-Befehl \texttt{latexmk -lualatex datei.tex}). Damit \LaTeX{} die Vorlagen des Fachschaftsrats findet, werden sie wie folgt eingerichtet:
+\begin{enumerate}
+	\item Die Vorlagen aus dem \href{https://github.com/fsrphysik-uds/latex-templates}{Repository} herunterladen (\textit{Code} \textrightarrow{} \textit{Download ZIP}) und entpacken.
+	\item Folgende Dateien in denselben Ordner wie die \texttt{.tex}-Datei kopieren:
+	      \begin{itemize}
+		      \item das Basispaket \texttt{fsrbase.sty},
+		      \item die jeweils verwendete Dokumentenklasse, z.\,B. \texttt{fsrprotocol.cls},
+		      \item das Logo \texttt{media/fsr-logo.png}, falls der Befehl \mintinline{latex}{\fsrlogo} verwendet wird (bei Sitzungsprotokollen immer, siehe \autoref{latex-fsrprotocol}).
+	      \end{itemize}
+\end{enumerate}
+
+\notebox{Alternativ können die Dateien auch systemweit installiert werden, sodass sie in jedem Ordner zur Verfügung stehen und nicht in jeden Arbeitsordner kopiert werden müssen. Wie das funktioniert, hängt von der installierten \LaTeX{}-Distribution ab (z.\,B. TeX~Live oder MiKTeX). Details beschreibt die Dokumentation der jeweiligen Distribution.}
+
+Bei Online-Editoren wie Overleaf ist eine systemweite Installation nicht möglich. Dort müssen die genannten Dateien immer in das jeweilige Projekt hochgeladen werden und neben der \texttt{.tex}-Datei liegen. Außerdem muss in den Projekteinstellungen (\textit{Menü} \textrightarrow{} \textit{Compiler}) LuaLaTeX als Compiler ausgewählt werden.

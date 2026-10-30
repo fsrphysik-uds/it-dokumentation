@@ -1,0 +1,22 @@
+\subsection{Sonderzeichen}
+\label{latex-sonderzeichen}
+Einige Zeichen haben in \LaTeX{} eine besondere Bedeutung, z.\,B. leitet \texttt{\%} einen Kommentar ein. Sie können deshalb nicht einfach so im Text verwendet werden. Sollen sie im Text erscheinen, wird die Eingabe aus der Tabelle verwendet. Bei den meisten Zeichen ist das ein vorangestellter Backslash, z.\,B. \mintinline{latex}{50\%} oder \mintinline{latex}{Q\&A}.
+
+\begin{center}
+	\begin{tabularx}{\linewidth}{clX}
+		\toprule
+		\textbf{Zeichen} & \textbf{Eingabe}            & \textbf{Bedeutung ohne Backslash}        \\
+		\midrule
+		\texttt{\%}      & \texttt{\textbackslash\%}   & Leitet einen Kommentar ein               \\
+		\texttt{\&}      & \texttt{\textbackslash\&}   & Trennt Spalten in Tabellen               \\
+		\texttt{\_}      & \texttt{\textbackslash\_}   & Tiefstellung in Formeln                  \\
+		\texttt{\#}      & \texttt{\textbackslash\#}   & Platzhalter für Argumente von Befehlen   \\
+		\texttt{\$}      & \texttt{\textbackslash\$}   & Beginnt und beendet eine Formel          \\
+		\texttt{\{}      & \texttt{\textbackslash\{}   & Beginnt eine Gruppe oder ein Argument    \\
+		\texttt{\}}      & \texttt{\textbackslash\}}   & Beendet eine Gruppe oder ein Argument    \\
+		\texttt{\textasciitilde} & \texttt{\textbackslash textasciitilde} & Geschütztes Leerzeichen (kein Zeilenumbruch) \\
+		\texttt{\textasciicircum} & \texttt{\textbackslash textasciicircum} & Hochstellung in Formeln \\
+		\texttt{\textbackslash} & \texttt{\textbackslash textbackslash} & Leitet einen Befehl ein \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
