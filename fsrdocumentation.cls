@@ -80,12 +80,17 @@
 }
 
 % Neue Umgebung um Konfigurationen schöner darzustellen
+% tabularx liest seinen Inhalt bis zum wörtlichen \end{tabularx} ein und muss daher
+% in eigenen Umgebungen als \tabularx ... \endtabularx geschrieben werden.
+% Wie bei den Hinweisboxen wird der von "parskip=half" verlangte Freiraum von 1em in der
+% letzten Zeile aufgehoben, da die Tabelle sonst 1em in den rechten Rand ragt.
 \newenvironment{config}
 {%
-	\begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.32\textwidth}X@{}}
-		}
-		{%
-	\end{tabularx}
+	\par\noindent\setlength{\parfillskip}{0pt plus 1fil}%
+	\tabularx{\textwidth}{@{}>{\bfseries}p{0.32\textwidth}X@{}}%
+}
+{%
+	\endtabularx\par
 }
 
 % Spezielle Version von "\item" zur Nutzung mit dem "config" environment

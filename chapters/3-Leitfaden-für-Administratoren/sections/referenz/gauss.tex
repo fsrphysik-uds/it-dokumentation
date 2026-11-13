@@ -1,0 +1,60 @@
+\subsection{Server: Gauss}
+\label{gauss}
+Der Server \texttt{gauss} stellt die Dienste des Fachschaftsrats bereit: Nextcloud, Paperless und die Buchführung. Alle Dateien des Fachschaftsrats liegen volldigitalisiert auf diesem Server.
+% TODO: Software für die Buchführung ergänzen (voraussichtlich Firefly III).
+
+Auf Gauss läuft die aktuelle stabile Version von Debian GNU/Linux. Bei der \hyperref[grundsystem-installieren]{Installation} wird nur das Grundsystem eingerichtet. Alle weitere Software und Konfiguration wird anschließend mit einem Ansible-Playbook eingerichtet, das von einem anderen Rechner aus per SSH auf Gauss ausgeführt wird.
+
+\subsubsection{Netzwerk}
+\label{gauss-netzwerk}
+Gauss liegt im selben Netz wie \hyperref[tesla-netzwerk]{Tesla}. Da es dort keinen DHCP-Server gibt, ist die Adresse fest eingestellt. Als DNS-Server wird Quad9 verwendet.
+
+\begin{config}
+	\configitem{Rechnername}{gauss}
+	\configitem{Domain-Name}{fs.uni-saarland.de}
+	\configitem{IP-Adresse}{134.96.1.74}
+	\configitem{Netzmaske}{255.255.255.248}
+	\configitem{Gateway}{134.96.1.73}
+	\configitem{DNS-Server}{9.9.9.9 149.112.112.112}
+\end{config}
+
+\subsubsection{Benutzerkonten}
+\label{gauss-benutzer}
+Das Konto \texttt{root} ist gesperrt. Administrative Aufgaben werden mit dem Admin-Konto über \texttt{sudo} erledigt. Das Admin-Konto hat ein eigenes Passwort, das sich von dem auf Tesla unterscheidet. Es wird vom jeweils aktuellen Administrator bei der Übernahme selbst festgelegt.
+
+\begin{config}
+	\configitem{Vollständiger Name}{Gauss Admin}
+	\configitem{Benutzername}{admingauss}
+	\configitem{Passwort}{Aktuelles Admin-Passwort}
+	\configitem{Root-Passwort}{(keines, Konto gesperrt)}
+\end{config}
+
+\subsubsection{Festplatten und Partitionen}
+\label{gauss-partitionen}
+Gauss hat zwei Festplatten mit jeweils 128\,GB:
+\begin{description}
+	\item[Systemplatte] Eine NVMe-SSD (derzeit \texttt{/dev/nvme0n1}) mit dem Betriebssystem. Sie ist mit einer GPT-Partitionstabelle für den Start über UEFI partitioniert. Es gibt keine Swap-Partition, stattdessen wird später eine Swap-Datei angelegt.
+	\item[Datenplatte] Eine SATA-SSD (derzeit \texttt{/dev/sda}) mit dem Dateisystem btrfs. Sie enthält die persistenten Daten aller Dienste und wird nicht bei der Installation, sondern mit dem Ansible-Playbook eingebunden. Bei einer Neuinstallation darf sie deshalb nicht verändert werden.
+\end{description}
+
+Die Systemplatte ist wie folgt partitioniert:
+
+\minisec{1. Partition: EFI-Systempartition}
+\begin{config}
+	\configitem{Größe}{1 GiB}
+	\configitem{Position}{Anfang}
+	\configitem{Benutzen als}{EFI-System-Partition}
+	\configitem{Boot-Flag}{ein}
+\end{config}
+
+\minisec{2. Partition: Systempartition}
+\begin{config}
+	\configitem{Größe}{100\,\% (restlicher Platz)}
+	\configitem{Benutzen als}{Ext4-Journaling-Dateisystem}
+	\configitem{Einbindungspunkt}{/}
+	\configitem{Einbindungsoptionen}{defaults}
+	\configitem{Name}{DEBIAN}
+	\configitem{Reservierte Blöcke}{5\,\%}
+	\configitem{Typische Nutzung}{standard}
+	\configitem{Boot-Flag}{aus}
+\end{config}

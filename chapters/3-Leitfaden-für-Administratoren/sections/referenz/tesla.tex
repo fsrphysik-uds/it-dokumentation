@@ -1,0 +1,63 @@
+\subsection{Arbeitsrechner: Tesla}
+\label{tesla}
+% TODO: Übersicht vervollständigen.
+Der Computer \texttt{tesla} dient als Arbeitsrechner des Fachschaftsrats. Hier können die Mitglieder allen alltäglichen Arbeiten nachkommen, wie z.\,B. dem Schreiben von Sitzungsprotokollen.
+
+Auf Tesla läuft die aktuelle stabile Version von Debian GNU/Linux. Bei der \hyperref[grundsystem-installieren]{Installation} wird nur das Grundsystem eingerichtet, alle weitere Software und Konfiguration wird anschließend mit einem Ansible-Playbook eingerichtet, das lokal auf Tesla ausgeführt wird.
+
+\subsubsection{Netzwerk}
+\label{tesla-netzwerk}
+Im Netz von Tesla gibt es keinen DHCP-Server, die Adresse ist daher fest eingestellt. Als DNS-Server wird Quad9 verwendet. Bei einer Verbindung ins VPN der Universität werden automatisch deren DNS-Server verwendet.
+% TODO: DNS mit dem HIZ abklären
+
+\begin{config}
+	\configitem{Rechnername}{tesla}
+	\configitem{Domain-Name}{(keiner)}
+	\configitem{IP-Adresse}{134.96.1.75}
+	\configitem{Netzmaske}{255.255.255.248}
+	\configitem{Gateway}{134.96.1.73}
+	\configitem{DNS-Server}{9.9.9.9 149.112.112.112}
+\end{config}
+
+\subsubsection{Benutzerkonten}
+\label{tesla-benutzer}
+Das Konto \texttt{root} ist gesperrt. Administrative Aufgaben werden mit dem Admin-Konto über \texttt{sudo} erledigt. Das Passwort des Admin-Kontos legt der jeweils aktuelle Administrator bei der Übernahme selbst fest.
+
+\begin{config}
+	\configitem{Vollständiger Name}{FSR Admin}
+	\configitem{Benutzername}{adminfsr}
+	\configitem{Passwort}{Aktuelles Admin-Passwort}
+	\configitem{Root-Passwort}{(keines, Konto gesperrt)}
+\end{config}
+
+Für die Mitglieder des FSR steht das Konto \texttt{fsrphysik} zur Verfügung. Dieses besitzt ein \textbf{temporäres Home-Verzeichnis}. Dies verhindert eine versehentliche Änderung wichtiger Einstellungen und stellt sicher, dass nach jedem Abmelden persönliche Daten gelöscht werden. Es ist deshalb wichtig, dass Dateien immer auf \hyperref[gauss]{Gauss} gespeichert werden, niemals auf Tesla.
+\notebox{Das Ansible-Playbook für Tesla erstellt diesen Benutzer automatisch und richtet das temporäre Home-Verzeichnis ein.}
+\begin{config}
+	\configitem{Vollständiger Name}{FSR Physik}
+	\configitem{Benutzername}{fsrphysik}
+	\configitem{Passwort}{Aktuelles Passwort des FSR}
+\end{config}
+
+\subsubsection{Festplatte und Partitionen}
+\label{tesla-partitionen}
+Tesla hat eine einzige Festplatte, eine SSD mit 128\,GB (derzeit \texttt{/dev/sda}). Sie ist mit einer GPT-Partitionstabelle für den Start über UEFI partitioniert. Es gibt keine Swap-Partition, stattdessen wird später eine Swap-Datei angelegt.
+
+\minisec{1. Partition: EFI-Systempartition}
+\begin{config}
+	\configitem{Größe}{1 GiB}
+	\configitem{Position}{Anfang}
+	\configitem{Benutzen als}{EFI-System-Partition}
+	\configitem{Boot-Flag}{ein}
+\end{config}
+
+\minisec{2. Partition: Systempartition}
+\begin{config}
+	\configitem{Größe}{100\,\% (restlicher Platz)}
+	\configitem{Benutzen als}{Ext4-Journaling-Dateisystem}
+	\configitem{Einbindungspunkt}{/}
+	\configitem{Einbindungsoptionen}{defaults}
+	\configitem{Name}{DEBIAN}
+	\configitem{Reservierte Blöcke}{5\,\%}
+	\configitem{Typische Nutzung}{standard}
+	\configitem{Boot-Flag}{aus}
+\end{config}

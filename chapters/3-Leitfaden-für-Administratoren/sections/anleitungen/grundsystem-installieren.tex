@@ -1,0 +1,101 @@
+\subsection{Installieren des Grundsystems}
+\label{grundsystem-installieren}
+Diese Anleitung beschreibt, wie Debian auf dem \hyperref[tesla]{Arbeitsrechner Tesla} oder dem \hyperref[gauss]{Server Gauss} neu installiert wird, z.\,B. nach einem Festplattenausfall oder wenn das System nicht mehr zu retten ist. Eingerichtet wird nur das Grundsystem. Alle weitere Software und Konfiguration wird anschließend mit dem Ansible-Playbook eingerichtet.
+% TODO: Verweis auf die Einrichtung per Ansible ergänzen, sobald der Abschnitt existiert.
+
+Der Ablauf ist für beide Rechner gleich. Die einzustellenden Werte stehen in der Referenz des jeweiligen Rechners, Abweichungen zwischen den Rechnern sind an den betreffenden Schritten angegeben.
+
+\warningbox{Bei der Installation werden alle Daten auf der Systemplatte des Rechners gelöscht. Daten, die noch gebraucht werden, müssen vorher gesichert werden.}
+
+\subsubsection{Vorbereiten des Installationsmediums}
+\label{grundsystem-installieren-medium}
+\begin{enumerate}
+	\item Von der \href{https://www.debian.org/download}{Debian-Website} das aktuelle Installationsabbild von \textbf{Debian Stable} (\texttt{netinst}, \texttt{amd64}) herunterladen.
+	\item Das Abbild auf einen USB-Stick schreiben, z.\,B. unter Linux mit dem folgenden Befehl. Dabei wird der gesamte Inhalt des Sticks gelöscht.
+	      \begin{Codeblock}{bash}
+		      sudo dd if=debian-XX.X.X-amd64-netinst.iso of=/dev/sdX bs=4M status=progress oflag=sync
+	      \end{Codeblock}
+	      Im Befehl den Dateinamen nach \texttt{if=} durch den der heruntergeladenen Datei und \texttt{/dev/sdX} durch den USB-Stick ersetzen. Welcher Gerätename zum USB-Stick gehört, zeigt der Befehl \texttt{lsblk}. Unter Windows kann stattdessen z.\,B. Rufus verwendet werden.
+\end{enumerate}
+
+\subsubsection{Starten des Installers}
+\label{grundsystem-installieren-starten}
+\begin{enumerate}
+	% TODO: Tasten für das Boot-Menü von Tesla und Gauss ergänzen.
+	\item Den USB-Stick an den Rechner anschließen, den Rechner einschalten und im Boot-Menü den USB-Stick auswählen.
+	\item Prüfen, dass das Menü des Installers \textit{Debian GNU/Linux UEFI Installer menu} heißt. Fehlt \textit{UEFI}, wurde der Stick im BIOS-Modus gestartet und die Installation funktioniert mit der vorgesehenen Partitionierung nicht. In diesem Fall neu starten und im Boot-Menü den Eintrag des Sticks mit \textit{UEFI} wählen.
+	\item \textit{Install} auswählen, nicht \textit{Graphical install}.
+\end{enumerate}
+
+\notebox{Im Installer wird mit den Pfeiltasten ausgewählt, mit der Leertaste an- und abgehakt und mit \texttt{Enter} bestätigt. Mit \texttt{Tab} wird zwischen Liste und Schaltflächen gewechselt, \textit{Zurück} führt zum vorherigen Dialog.}
+
+\subsubsection{Sprache, Netzwerk und Benutzer}
+\label{grundsystem-installieren-grundeinstellungen}
+\begin{enumerate}
+	\item \textit{Select a language}: \textit{German -- Deutsch}.
+	\item \textit{Wählen Sie Ihren Standort aus}: \textit{Deutschland}.
+	\item \textit{Tastatur konfigurieren}: \textit{Deutsch}.
+	\item Hat der Rechner mehrere Netzwerkschnittstellen, fragt der Installer nach der primären. Dort die Schnittstelle auswählen, an der das Netzwerkkabel steckt.
+	\item Der Installer versucht, das Netzwerk automatisch einzurichten. Da es im Netz der Rechner keinen DHCP-Server gibt, schlägt das nach einer Weile fehl. Die Meldung \textit{Netzwerk-Autokonfiguration fehlgeschlagen} mit \textit{Weiter} bestätigen. Der Versuch kann auch mit \textit{Abbrechen} abgekürzt werden.
+	\item \textit{Netzwerk einrichten}: \textit{Netzwerk manuell einrichten}.
+	\item Nacheinander \textit{IP-Adresse}, \textit{Netzmaske}, \textit{Gateway} und die \textit{Adressen der DNS-Server} aus der Netzwerkkonfiguration von \hyperref[tesla-netzwerk]{Tesla} bzw. \hyperref[gauss-netzwerk]{Gauss} eintragen. Die beiden DNS-Server werden durch ein Leerzeichen getrennt in dasselbe Feld eingetragen. Die Zusammenfassung mit \textit{Ja} bestätigen.
+	\item \textit{Rechnername} und \textit{Domain-Name} ebenfalls aus der Netzwerkkonfiguration übernehmen. Hat der Rechner keinen Domain-Namen, das Feld leer lassen.
+	\item \textit{Root-Passwort} leer lassen und auch die Bestätigung leer lassen. Dadurch wird das Konto \texttt{root} gesperrt, und das im nächsten Schritt angelegte Konto erhält Administratorrechte über \texttt{sudo}.
+	\item Das Admin-Konto anlegen: \textit{Vollständiger Name} und \textit{Benutzername} des Admin-Kontos aus den Benutzerkonten von \hyperref[tesla-benutzer]{Tesla} bzw. \hyperref[gauss-benutzer]{Gauss} übernehmen und das aktuelle Admin-Passwort des Rechners zweimal eingeben.
+\end{enumerate}
+
+\subsubsection{Partitionieren der Systemplatte}
+\label{grundsystem-installieren-partitionieren}
+Die Systemplatte wird manuell partitioniert, weil die geführte Partitionierung eine Swap-Partition anlegt. Auf beiden Rechnern wird stattdessen später eine Swap-Datei verwendet. Welche Festplatte die Systemplatte ist und welche Werte einzustellen sind, steht bei den Partitionen von \hyperref[tesla-partitionen]{Tesla} bzw. \hyperref[gauss-partitionen]{Gauss}.
+
+\importantbox{Auf Gauss liegen die persistenten Daten aller Dienste auf der \hyperref[gauss-partitionen]{Datenplatte}. Sie hat dieselbe Größe wie die Systemplatte und darf im Installer weder ausgewählt noch verändert werden. Die Systemplatte von Gauss ist die NVMe-SSD (derzeit \texttt{nvme0n1}), die Datenplatte die SATA-SSD (derzeit \texttt{sda}).}
+
+\begin{enumerate}
+	\item \textit{Partitionierungsmethode}: \textit{Manuell}.
+	\item In der Übersicht die Systemplatte selbst auswählen, nicht eine ihrer Partitionen.
+	\item \textit{Neue leere Partitionstabelle auf diesem Gerät erstellen?}: \textit{Ja}.
+	\item Für die erste Partition:
+	      \begin{enumerate}
+		      \item Den neuen Eintrag \textit{FREIER SPEICHER} auswählen und \textit{Eine neue Partition erstellen} wählen.
+		      \item Als Größe \texttt{1 GiB} eintragen und als Position \textit{Anfang} wählen.
+		      \item \textit{Benutzen als} auf \textit{EFI-System-Partition} stellen. Das \textit{Boot-Flag} wird dabei automatisch auf \textit{ein} gesetzt.
+		      \item \textit{Anlegen der Partition beenden}.
+	      \end{enumerate}
+	\item Für die zweite Partition:
+	      \begin{enumerate}
+		      \item Wieder \textit{FREIER SPEICHER} auf der Systemplatte auswählen und \textit{Eine neue Partition erstellen} wählen.
+		      \item Als Größe \texttt{100\%} eintragen. Da die Partition den restlichen Platz belegt, wird nicht nach der Position gefragt.
+		      \item Die Einstellungen der Systempartition prüfen und anpassen. Gegenüber den Vorgaben muss in der Regel nur der \textit{Name} auf \texttt{DEBIAN} gesetzt werden.
+		      \item \textit{Anlegen der Partition beenden}.
+	      \end{enumerate}
+	\item Bei Gauss prüfen, dass die Datenplatte in der Übersicht unverändert ist.
+	\item \textit{Partitionierung beenden und Änderungen übernehmen}.
+	\item Der Installer weist darauf hin, dass keine Swap-Partition angelegt wurde. Die Frage, ob zum Partitionierungsmenü zurückgekehrt werden soll, mit \textit{Nein} beantworten.
+	\item \textit{Änderungen auf die Festplatten schreiben?}: Prüfen, dass nur Partitionen der Systemplatte aufgelistet sind, dann \textit{Ja}.
+\end{enumerate}
+
+Anschließend installiert der Installer das Grundsystem. Das dauert einige Minuten.
+
+\subsubsection{Paketverwaltung und Softwareauswahl}
+\label{grundsystem-installieren-software}
+\begin{enumerate}
+	\item \textit{Weiteres Installationsmedium einlesen?}: \textit{Nein}.
+	\item \textit{Land des Debian-Archiv-Spiegelservers}: \textit{Deutschland}.
+	\item \textit{Debian-Archiv-Spiegelserver}: \texttt{deb.debian.org}.
+	\item \textit{HTTP-Proxy-Daten}: leer lassen.
+	\item \textit{An der Paketverwendungserfassung teilnehmen?}: \textit{Nein}.
+	\item \textit{Softwareauswahl}: Die vorausgewählten Einträge \textit{Debian desktop environment} und \textit{GNOME} abwählen. Eine Desktop-Umgebung wird, falls benötigt, später mit dem Ansible-Playbook eingerichtet. Anschließend anhaken:
+	      \begin{description}
+		      \item[Tesla] nur \textit{Standard-Systemwerkzeuge}.
+		      \item[Gauss] \textit{SSH server} und \textit{Standard-Systemwerkzeuge}. Der SSH-Server wird gebraucht, weil das Ansible-Playbook von einem anderen Rechner aus per SSH ausgeführt wird und Gauss später nicht mehr mit Monitoren, Maus und Tastatur verbunden ist.
+	      \end{description}
+\end{enumerate}
+
+\subsubsection{Abschließen der Installation}
+\label{grundsystem-installieren-abschliessen}
+\begin{enumerate}
+	\item Der Bootloader GRUB wird automatisch installiert. Fragt der Installer, ob GRUB zusätzlich in den Pfad für Wechselmedien installiert werden soll, mit \textit{Nein} antworten.
+	\item Bei \textit{Installation abgeschlossen} den USB-Stick abziehen und mit \textit{Weiter} neu starten.
+	\item Nach dem Neustart mit dem Admin-Konto anmelden und prüfen, dass der Rechner ins Internet kommt, z.\,B. mit \texttt{ping -c 3 deb.debian.org}.
+	\item Bei Gauss zusätzlich von einem anderen Rechner aus prüfen, dass die Anmeldung per SSH funktioniert, z.\,B. mit \texttt{ssh <Benutzername>@<IP-Adresse>}. Dabei den \hyperref[gauss-benutzer]{Benutzernamen des Admin-Kontos} und die \hyperref[gauss-netzwerk]{IP-Adresse} von Gauss einsetzen.
+\end{enumerate}
