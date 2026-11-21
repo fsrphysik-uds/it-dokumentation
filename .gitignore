@@ -21,6 +21,9 @@ build/
 *.vrb
 *.xdv
 
+# Minted aux dir
+_minted/
+
 # Kompillierte PDF
 *.pdf
 

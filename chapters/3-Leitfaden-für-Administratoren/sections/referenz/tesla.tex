@@ -7,8 +7,7 @@ Auf Tesla läuft die aktuelle stabile Version von Debian GNU/Linux. Bei der \hyp
 
 \subsubsection{Netzwerk}
 \label{tesla-netzwerk}
-Im Netz von Tesla gibt es keinen DHCP-Server, die Adresse ist daher fest eingestellt. Als DNS-Server wird Quad9 verwendet. Bei einer Verbindung ins VPN der Universität werden automatisch deren DNS-Server verwendet.
-% TODO: DNS mit dem HIZ abklären
+Im Netz von Tesla gibt es keinen DHCP-Server, die Adresse ist daher fest eingestellt. Als DNS-Server werden die der Universität verwendet.
 
 \begin{config}
 	\configitem{Rechnername}{tesla}
@@ -16,7 +15,7 @@ Im Netz von Tesla gibt es keinen DHCP-Server, die Adresse ist daher fest eingest
 	\configitem{IP-Adresse}{134.96.1.75}
 	\configitem{Netzmaske}{255.255.255.248}
 	\configitem{Gateway}{134.96.1.73}
-	\configitem{DNS-Server}{9.9.9.9 149.112.112.112}
+	\configitem{DNS-Server}{134.96.7.100 134.96.7.99 134.96.7.5}
 \end{config}
 
 \subsubsection{Benutzerkonten}
